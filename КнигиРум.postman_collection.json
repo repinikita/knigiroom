@@ -1,0 +1,1943 @@
+{
+	"info": {
+		"_postman_id": "e86f3fee-1e1d-4827-8045-ba9da419b0eb",
+		"name": "КнигиРум",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23280533"
+	},
+	"item": [
+		{
+			"name": "Отзывы по id книги",
+			"item": [
+				{
+					"name": "Запрос с корректным book_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Массив 'reviews' имеет правильные объекты\", function () {",
+									"    const reviews = pm.response.json().reviews;",
+									"    reviews.forEach(review => {",
+									"        pm.expect(review).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"        pm.expect(review).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"        pm.expect(review).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"        pm.expect(review).to.have.property(\"text\").that.is.a(\"string\");",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"'total_count' соответствует количеству отзывов\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.total_count).to.equal(jsonData.reviews.length);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос по несуществующему book_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Значение 'total_count' равно 0\", function () {",
+									"    const totalCount = pm.response.json().total_count;",
+									"    pm.expect(totalCount).to.equal(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/98"
+					},
+					"response": []
+				},
+				{
+					"name": "Структура  ответа",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Массив 'reviews' имеет правильные объекты\", function () {",
+									"    const reviews = pm.response.json().reviews;",
+									"    reviews.forEach(review => {",
+									"        pm.expect(review).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"        pm.expect(review).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"        pm.expect(review).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"        pm.expect(review).to.have.property(\"text\").that.is.a(\"string\");",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"'total_count' соответствует количеству отзывов\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.total_count).to.equal(jsonData.reviews.length);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос на book_id с единственным отзывом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Массив 'reviews' содержит один отзыв\", function () {",
+									"    const reviews = pm.response.json().reviews;",
+									"    pm.expect(reviews).to.be.an(\"array\").with.lengthOf(1);",
+									"});",
+									"pm.test(\"Значение 'total_count' равно 1\", function () {",
+									"    const totalCount = pm.response.json().total_count;",
+									"    pm.expect(totalCount).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос на book_id с большим количеством отзывов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Массив 'reviews' содержит 13 отзывов\", function () {",
+									"    const reviews = pm.response.json().reviews;",
+									"    pm.expect(reviews).to.be.an(\"array\").with.lengthOf(13);",
+									"});",
+									"pm.test(\"Значение 'total_count' равно 13\", function () {",
+									"    const totalCount = pm.response.json().total_count;",
+									"    pm.expect(totalCount).to.equal(13);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/47"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с book_id = 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Значение 'total_count' равно 0\", function () {",
+									"    const totalCount = pm.response.json().total_count;",
+									"    pm.expect(totalCount).to.equal(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/0"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с отрицательным значением book_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"",
+									"// Проверка текста сообщения об ошибке",
+									"pm.test(\"Сообщение об ошибке: Invalid format for parameter book_id\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\").that.equals(\"Invalid format for parameter book_id\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/-6"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с очень большим значением book_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Сообщение об ошибке содержит 'Invalid format for parameter book_id'\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"Invalid format for parameter book_id\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/{{$randomInt}}{{$randomInt}}{{$randomInt}}{{$randomInt}}{{$randomInt}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с некорректным типом book_id(string)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Сообщение об ошибке содержит 'Invalid format for parameter book_id'\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"Invalid format for parameter book_id\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/one"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос без параметра book_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с неверным методом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									"// Проверка текста сообщения об ошибке",
+									"pm.test(\"Сообщение об ошибке: Method Not Allowed\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\").that.equals(\"Method Not Allowed\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/reviews/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Отзывы по id отзыва",
+			"item": [
+				{
+					"name": "Запрос с существующим review_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Проверка структуры тела ответа",
+									"pm.test(\"Ответ содержит ожидаемые поля\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"    pm.expect(jsonData).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"text\").that.is.a(\"string\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с несуществующим review_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ответ содержит ожидаемые поля с пустыми значениями\", function () {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    // Проверяем структуру полей",
+									"    pm.expect(jsonData).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"    pm.expect(jsonData).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"text\").that.is.a(\"string\");",
+									"",
+									"    // Проверяем значения полей",
+									"    pm.expect(jsonData.author_name).to.equal(\"\");",
+									"    pm.expect(jsonData.recommended).to.equal(false);",
+									"    pm.expect(jsonData.review_id).to.equal(0);",
+									"    pm.expect(jsonData.text).to.equal(\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/67"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с review_id = 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ответ содержит ожидаемые поля с пустыми значениями\", function () {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    // Проверяем структуру полей",
+									"    pm.expect(jsonData).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"    pm.expect(jsonData).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"text\").that.is.a(\"string\");",
+									"",
+									"    // Проверяем значения полей",
+									"    pm.expect(jsonData.author_name).to.equal(\"\");",
+									"    pm.expect(jsonData.recommended).to.equal(false);",
+									"    pm.expect(jsonData.review_id).to.equal(0);",
+									"    pm.expect(jsonData.text).to.equal(\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/0"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с очень большим значением review_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус ответа 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Сообщение об ошибке содержит 'Invalid format for parameter review_id'\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"Invalid format for parameter review_id\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/{{$randomInt}}{{$randomInt}}{{$randomInt}}{{$randomInt}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с некорректным типом review_id(string)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Сообщение об ошибке содержит 'Invalid format for parameter review_id'\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"Invalid format for parameter review_id\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/one"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос без параметра review_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос с неверным методом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									"// Проверка текста сообщения об ошибке",
+									"pm.test(\"Сообщение об ошибке: Method Not Allowed\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\").that.equals(\"Method Not Allowed\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/review/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Добавление Отзыва",
+			"item": [
+				{
+					"name": "валидация book_id",
+					"item": [
+						{
+							"name": "Пустое значение",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Ноль",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Отрицательное значение",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":-1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Другой тип данных",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":\"Один\",\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Без ключа",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Валидация Author_name",
+					"item": [
+						{
+							"name": "author_name 10 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "author_name 19 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае Ррнпитор\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "author_name 20 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"РрнпитораеРрнпиторае\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "author_name 21",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"РрнпитораеРрнпиторае\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "author_name 30 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"РрнпитораеРрнпитораеРрнпиторае\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "author_name >100 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"РрнпитораеРрнпитоРрнпитораеРрнпитораеРрнпитораеРрнпитораераеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпитораеРрнпиторае\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Пусотая строка",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\":\"\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Другой тип данных",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\":123,\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Без ключа",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "text",
+					"item": [
+						{
+							"name": "Текст 100 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"Это пример текста, который содержит ровно сто символов, включая пробелы и знаки.\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Текст 199 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"Это пример текста, который содержит ровно сто девяносто девять символов, включая пробелы, знаки препинания и буквы. Текст используется для демонстрации длины и формата сообщения.\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Текст 200 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"// Проверка наличия полей review_id и total_count",
+											"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+											"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"вововововововоовововоророарловоаыфралвалвларвларлвралвралрвларвларлвралвралрвларлвралрвларвларлвралвралрвларлвралвралрлвралвралвралрвларвлралвралрвларвлралвралрвларлвравлралвралрвларвлралрлрлрллрлвалв\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Текст 201 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"вововововововоовововоророарловоаыфралвалвларвларлвралвралрвларвларлвралвралрвларлвралрвларвларлвралвралрвларлвралвралрлвралвралвралрвларвлралвралрвларвлралвралрвларлвравлралвралрвларвлралрлрлрллрлвалвр\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Текст 250 символов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"вововововововоовововоророарловоаыфралвалвларвларлвралвралрвларвларлвралвралрвларлвралрвларвларлвралвралрвларлвралвралрлвралвралвралрвларвлралвралрвларвлралвралрвларлвравлралвралрвларвлралрлрлрллрлвалврпопопопопоопорорараааораоорааораоаоаораароооррпор\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Пустая строка",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\": \"\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Пустое значение",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"Ррнпиторае\",\n    \"text\":,\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Без ключа",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Другой тип данных",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\":true,\n    \"recommended\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Recomended",
+					"item": [
+						{
+							"name": "Пустое значение",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\":\"{{$randomWords}}\",\n    \"recommended\": \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Другой тип данных",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\":\"{{$randomWords}}\",\n    \"recommended\": \"false\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						},
+						{
+							"name": "Без ключа",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"",
+											"// Проверка статуса ответа",
+											"pm.test(\"Статус ответа 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\":\"{{$randomWords}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/review"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cоздание отзыва с заполненными валидными полями",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"// Проверка наличия полей review_id и total_count",
+									"pm.test(\"Ответ содержит поля review_id и total_count\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"total_count\").that.is.a(\"number\");",
+									"});",
+									"",
+									"// Сохранение review_id в переменную коллекции",
+									"pm.test(\"Сохранить review_id в переменную коллекции\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    const reviewId = jsonData.review_id;",
+									"",
+									"    // Убедитесь, что review_id существует в ответе",
+									"    pm.expect(reviewId).to.be.a(\"number\");",
+									"",
+									"    // Сохраняем значение review_id в переменную коллекции",
+									"    pm.collectionVariables.set(\"review_id\", reviewId);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос на получение созданного отзыва по review_id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Проверка наличия всех необходимых полей в теле ответа",
+									"pm.test(\"Тело ответа содержит правильные поля\", function () {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    // Проверка каждого поля",
+									"    pm.expect(jsonData).to.have.property(\"author_name\").that.is.a(\"string\");",
+									"    pm.expect(jsonData).to.have.property(\"recommended\").that.is.a(\"boolean\");",
+									"    pm.expect(jsonData).to.have.property(\"review_id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"text\").that.is.a(\"string\");",
+									"});",
+									"// Проверка, что review_id в ответе равен значению переменной коллекции review_id",
+									"pm.test(\"review_id в ответе равен значению переменной коллекции\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    const reviewIdFromResponse = jsonData.review_id;",
+									"",
+									"    // Получаем значение переменной коллекции review_id",
+									"    const reviewIdFromCollection = pm.collectionVariables.get(\"review_id\");",
+									"",
+									"    // Сравниваем review_id в ответе с переменной коллекции",
+									"    pm.expect(reviewIdFromResponse).to.equal(reviewIdFromCollection);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/review/{{review_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Cоздание отзыва с несуществующим id книги",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 100,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Cоздание отзыва с пустым телом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Cоздание отзыва с пустыми полями",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Статус ответа 400 (Bad Request)\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\":,\n    \"author_name\":,\n    \"text\":,\n    \"recommended\":\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Неверный метод",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 405\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									"// Проверка текста сообщения об ошибке",
+									"pm.test(\"Сообщение об ошибке: Method Not Allowed\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\").that.equals(\"Method Not Allowed\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/review"
+					},
+					"response": []
+				},
+				{
+					"name": "Неверный Эндпоинт",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Проверка статуса ответа",
+									"pm.test(\"Статус ответа 404\", function () {",
+									"    pm.response.to.have.status(405);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"author_name\": \"{{$randomFirstName}}\",\n    \"text\": \"{{$randomWords}}\",\n    \"recommended\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/reviews"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": " http://188.120.241.222:8534",
+			"type": "string"
+		},
+		{
+			"key": "review_id",
+			"value": ""
+		}
+	]
+}
